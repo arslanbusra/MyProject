@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Leave</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+    
+    <h1>Request Leave</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="leave_type">Leave Type:</label>
+        <select id="leave_type" name="leave_type" required>
+            <option value="annual">Annual Leave</option>
+            <option value="sick">Sick Leave</option>
+            <option value="unpaid">Unpaid Leave</option>
+        </select>
+
+        <br>
+
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required>
+
+        <br>
+
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required>
+
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p><a href="{% url 'employee_dashboard' %}">Back to Dashboard</a></p>
+
+    <script src="{% static 'accounts/accounts.js' %}"></script>
+</body>
+</html>

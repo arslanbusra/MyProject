@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+    {% csrf_token %}
+    <h1>Welcome, {{ user.username }}!</h1>
+
+    <!-- Bugünkü Giriş ve Çıkış Bilgileri -->
+    <section>
+        <h2>Today's Attendance</h2>
+        {% if attendance %}
+            <p><strong>Entry Time:</strong> {{ attendance.first_entry }}</p>
+            <p><strong>Exit Time:</strong> {{ attendance.last_exit }}</p>
+            <p><strong>Total Hours Worked:</strong> {{ attendance.total_work_hours }} hours</p>
+        {% else %}
+            <p>You have not marked your attendance yet.</p>
+        {% endif %}
+        <a href="{% url 'mark_attendance' %}">Mark Attendance</a>
+    </section>
+
+    <!-- İzin Talepleri -->
+    <section>
+        <h2>Your Leave Requests</h2>
+        {% if leave_requests %}
+            <ul>
+                {% for leave in leave_requests %}
+                    <li>
+                        <strong>Type:</strong> {{ leave.leave_type }}<br>
+                        <strong>From:</strong> {{ leave.start_date }} to {{ leave.end_date }}<br>
+                        <strong>Status:</strong> {{ leave.status }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have no leave requests.</p>
+        {% endif %}
+        <a href="{% url 'request_leave' %}">Request Leave</a>
+    </section>
+
+    <!-- Çıkış Yap -->
+    <section>
+        <h2>Logout</h2>
+        <a href="{% url 'logout' %}">Logout</a>
+    </section>
+
+    <script src="{% static 'accounts/accounts.js' %}"></script>
+</body>
+</html>
+

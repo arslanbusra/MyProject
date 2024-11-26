@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+    {% csrf_token %}
+    <h1>Mark Attendance</h1>
+
+    <!-- Giriş ve Çıkış Saatlerini Göster -->
+    {% if attendance %}
+        <section>
+            <h2>Today's Attendance</h2>
+            <p><strong>Entry Time:</strong> {{ attendance.first_entry }}</p>
+            <p><strong>Exit Time:</strong> {{ attendance.last_exit }}</p>
+        </section>
+    {% else %}
+        <p>You have not marked your attendance yet.</p>
+    {% endif %}
+
+    <!-- Giriş ve Çıkış Saatlerini Kaydet -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="entry_time">Entry Time:</label>
+        <input type="time" id="entry_time" name="entry_time" required>
+
+        <label for="exit_time">Exit Time:</label>
+        <input type="time" id="exit_time" name="exit_time" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="{% static 'accounts/accounts.js' %}"></script>
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Attendance Report</title>
+</head>
+<body>
+    <h1>Monthly Attendance Report</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Total Hours</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendances %}
+            <tr>
+                <td>{{ record.user__username }}</td>
+                <td>{{ record.total_hours }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No records found for this month.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

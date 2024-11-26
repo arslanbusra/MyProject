@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}</h1>
+
+    <!-- Giriş/Çıkış Saatlerini Görüntüleme -->
+    <section>
+        <h2>Employee Attendance</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Date</th>
+                    <th>First Entry</th>
+                    <th>Last Exit</th>
+                    <th>Total Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <td>{{ attendance.user.username }}</td>
+                    <td>{{ attendance.date }}</td>
+                    <td>{{ attendance.first_entry }}</td>
+                    <td>{{ attendance.last_exit }}</td>
+                    <td>{{ attendance.total_work_hours }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No attendance records available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- İzin Taleplerini Yönetme -->
+    <section>
+        <h2>Leave Requests</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leave_requests %}
+                <tr>
+                    <td>{{ leave.user.username }}</td>
+                    <td>{{ leave.leave_type }}</td>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+                    <td>{{ leave.status }}</td>
+                    <td>
+                        {% if leave.status == "pending" %}
+                        <form method="POST" action="{% url 'approve_leave' leave.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Approve</button>
+                        </form>
+                        <form method="POST" action="{% url 'reject_leave' leave.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Reject</button>
+                        </form>
+                        {% else %}
+                            <button disabled>{{ leave.status }}</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No leave requests available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Aylık Rapor -->
+    <section>
+        <h2>Monthly Attendance Report</h2>
+        <form method="GET" action="{% url 'monthly_report' %}">
+            <label for="month">Select Month:</label>
+            <input type="month" id="month" name="month" required>
+            <button type="submit">Generate Report</button>
+        </form>
+    </section>
+
+
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+      </form>
+
+</body>
+</html>
+

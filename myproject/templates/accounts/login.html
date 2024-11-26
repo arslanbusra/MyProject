@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    
+    <!-- Hata mesajını göstermek için -->
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    
+    <!-- Kullanıcı tipi seçimi formu -->
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        <label for="username"><b>Username</b></label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        
+        <label for="password"><b>Password</b></label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        
+        <label for="user_type"><b>Choose User Type</b></label>
+        <select id="user_type" name="user_type" required>
+            <option value="" disabled selected>-- Select User Type --</option>
+            <option value="Employee">Employee</option>
+            <option value="Manager">Manager</option>
+        </select>
+        
+        <button type="submit">Login</button>
+    </form>
+    <script src="{% static 'accounts/accounts.js' %}"></script>
+</body>
+</html>
+
